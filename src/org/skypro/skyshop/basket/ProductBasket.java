@@ -2,63 +2,60 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-public class ProductBasket {
+import java.util.Arrays;
 
+public class ProductBasket {
     private final Product[] products = new Product[5];
-    private int count = 0;
-    private Object[] product;
+    private int productCount = 0;
 
     public void addProduct(Product product) {
-        if (count < products.length) {
-            products[count] = product;
-            count++;
+        if (productCount < products.length) {
+            products[productCount] = product;
+            productCount++;
         } else {
             System.out.println("Невозможно добавить продукт");
         }
     }
 
-    public void printBasket() {
-        if (count == 0) {
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (Product product : products) {
+            if (product != null) {
+                totalPrice += product.getPrice();
+            }
+        }
+        return totalPrice;
+    }
+
+    public void printBasketContent() {
+        if (productCount == 0) {
             System.out.println("В корзине пусто");
             return;
         }
 
+        int totalPrice = 0;
         for (Product product : products) {
             if (product != null) {
-                System.out.println(product);
+                System.out.println(product.getName() + ": " + product.getPrice());
+                totalPrice += product.getPrice();
+            } else {
+                break;
             }
         }
+        System.out.println("Итого: " + totalPrice);
     }
 
-    public void allSum() {
-        int total = 0;
+    public boolean containsProduct(String productName) {
         for (Product product : products) {
-            total += product.getPrice();
-        }
-        System.out.println(total + " - общая стоимость");
-    }
-
-    public boolean findProductByNane(String name) {
-        for (int i = 0; i < products.length; i++) {
-            if (products[i].getName().equals(name)) {
+            if (product != null && product.getName().equals(productName)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void clianBasket() {
-        for (int i = 0; i < products.length; i++) {
-            products[i] = null;
-        }
-        System.out.println(products[0] + " пусто");
-        System.out.println(products[1] + " пусто");
-        System.out.println(products[2] + " пусто");
-        System.out.println(products[3] + " пусто");
-        System.out.println(products[4] + " пусто");
-
+    public void clearBasket() {
+        Arrays.fill(products, null);
+        productCount = 0;
     }
-
-
-
 }
