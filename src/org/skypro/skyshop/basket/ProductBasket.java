@@ -2,44 +2,53 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-import java.util.Arrays;
-
 public class ProductBasket {
-
     private final Product[] products = new Product[5];
     private int count = 0;
 
-
     public void addProduct(Product product) {
-        if (count < products.length) {
-            products[count] = product;
-            count++;
-        } else {
+        if (count >= products.length) {
             System.out.println("Невозможно добавить продукт");
+            return;
         }
+        products[count++] = product;
     }
 
     public int getTotalPrice() {
-        return Arrays.stream(products).filter(p -> p != null).mapToInt(Product::getPrice).sum();
+        int total = 0;
+        for (Product product : products) {
+            if (product != null) {
+                total += product.getPrice();
+            }
+        }
+        return total;
     }
 
     public void printBasket() {
-        if (count == 0) {
-            System.out.println("в корзине пусто");
-            return;
-        }
+        boolean empty = true;
+        int specialCount = 0;
+
         for (Product product : products) {
             if (product != null) {
-                System.out.println(product);
+                System.out.println(product.toString());
+                if (product.isSpecial()) {
+                    specialCount++;
+                }
+                empty = false;
             }
         }
-        System.out.println("Итого: " + getTotalPrice());
-        System.out.println("Специальных товаров: " + Arrays.stream(products).filter(p -> p != null && p.isSpecial()).count());
+
+        if (empty) {
+            System.out.println("в корзине пусто");
+        } else {
+            System.out.println("Итого: " + getTotalPrice());
+            System.out.println("Специальных товаров: " + specialCount);
+        }
     }
 
     public boolean containsProduct(String name) {
         for (Product product : products) {
-            if (product != null && product.getName().equals(name)) {
+            if (product != null && product.getName().equalsIgnoreCase(name)) {
                 return true;
             }
         }
@@ -47,7 +56,9 @@ public class ProductBasket {
     }
 
     public void clear() {
-        Arrays.fill(products, null);
+        for (int i = 0; i < products.length; i++) {
+            products[i] = null;
+        }
         count = 0;
     }
 }
