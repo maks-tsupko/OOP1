@@ -4,10 +4,15 @@ import org.skypro.skyshop.search.Searchable;
 
 public abstract class Product implements Searchable {
     private final String name;
+    protected int discountPercent;
 
     public Product(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Название продукта не может быть пустым или null");
+        }
         this.name = name;
     }
+
 
     public String getName() {
         return name;
