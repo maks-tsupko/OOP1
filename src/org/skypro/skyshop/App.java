@@ -1,16 +1,14 @@
 package org.skypro.skyshop;
 
-import org.skypro.skyshop.article.Article;
-import org.skypro.skyshop.basket.ProductBasket;
-import org.skypro.skyshop.product.*;
+import org.skypro.skyshop.basket.Searchable;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
+import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.search.ProductBasket;
 import org.skypro.skyshop.search.SearchEngine;
-import org.skypro.skyshop.search.Searchable;
 
-
-
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
@@ -31,13 +29,61 @@ public class App {
 
         basket.printBasket();
 
+        // Удаление существующего продукта
+        List<Product> removed = basket.removeByName("Молоко");
+        if (!removed.isEmpty()) {
+            System.out.println("Удалены продукты:");
+            for (Product product : removed) {
+                System.out.println(product.getStringRepresentation());
+            }
+        }
+        basket.printBasket();
+
+        // Удаление несуществующего продукта
+        List<Product> removedNone = basket.removeByName("Кофе");
+        if (removedNone.isEmpty()) {
+            System.out.println("Список пуст");
+        }
+        basket.printBasket();
+
         // Статьи
-        Article a1 = new Article("Как выбрать молоко", "Разбираемся в составе и видах молока");
-        Article a2 = new Article("Польза яблок", "Почему яблоки важны для здоровья");
-        Article a3 = new Article("Скидки на хлеб", "Новые акции на хлебобулочные изделия");
+        Product a1;
+        a1 = new Product("Как выбрать молоко", "Разбираемся в составе и видах молока") {
+            @Override
+            public int getPrice() {
+                return 0;
+            }
+
+            @Override
+            public boolean isSpecial() {
+                return false;
+            }
+        };
+        Product a2 = new Product("Польза яблок", "Почему яблоки важны для здоровья") {
+            @Override
+            public int getPrice() {
+                return 0;
+            }
+
+            @Override
+            public boolean isSpecial() {
+                return false;
+            }
+        };
+        Product a3 = new Product("Скидки на хлеб", "Новые акции на хлебобулочные изделия") {
+            @Override
+            public int getPrice() {
+                return 0;
+            }
+
+            @Override
+            public boolean isSpecial() {
+                return false;
+            }
+        };
 
         // Поисковый движок
-        SearchEngine engine = new SearchEngine(10);
+        SearchEngine engine = new SearchEngine();
         engine.add(p1);
         engine.add(p2);
         engine.add(p3);
@@ -54,26 +100,19 @@ public class App {
         printSearchResults(engine.search("скидки"));
     }
 
-    private static void printSearchResults(Searchable[] results) {
+    private static void printSearchResults(List<Searchable> results) {
         System.out.println("Результаты поиска:");
         for (Searchable result : results) {
-            if (result != null) {
-                System.out.println(result.getStringRepresentation());
-            }
+            System.out.println(result.getStringRepresentation());
         }
         System.out.println();
     }
 
     static {
         try {
-            new SimpleProduct("Сок", 20);
+            new SimpleProduct("Сок", -20);
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка: " + e.getMessage());
         }
-
     }
-
 }
-
-
-

@@ -1,7 +1,6 @@
-package org.skypro.skyshop.search;
+package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.basket.Searchable;
-import org.skypro.skyshop.product.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 public class SearchEngine {
     private List<Searchable> items = new ArrayList<>();
 
-    public void add(Product item) {
+    public void add(Searchable item) {
         items.add(item);
     }
 

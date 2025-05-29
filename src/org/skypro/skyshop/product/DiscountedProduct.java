@@ -5,7 +5,7 @@ public class DiscountedProduct extends Product {
     private final int discount = 0; // в процентах
 
     public DiscountedProduct(String name, int basePrice, int discountPercent) {
-        super(name);
+        super(name, "Разбираемся в составе и видах молока");
         if (basePrice <= 0) {
             throw new IllegalArgumentException("Базовая цена должна быть строго больше 0");
         }
