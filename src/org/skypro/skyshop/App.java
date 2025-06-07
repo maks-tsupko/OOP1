@@ -1,10 +1,8 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.Searchable;
-import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
-import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.search.ProductBasket;
 import org.skypro.skyshop.search.SearchEngine;
 
@@ -13,8 +11,8 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         // Товары
-        Product p1 = new SimpleProduct("Хлеб", 40);
-        Product p2 = new DiscountedProduct("Молоко", 100, 20);
+        Product p1 = new org.skypro.skyshop.SimpleProduct("Хлеб", 40);
+        Product p2 = new org.skypro.skyshop.DiscountedProduct("Молоко", 100, 20);
         Product p3 = new FixPriceProduct("Книга");
         Product p4 = new SimpleProduct("Яблоки", 60);
         Product p5 = new FixPriceProduct("Кружка");
@@ -110,7 +108,7 @@ public class App {
 
     static {
         try {
-            new SimpleProduct("Сок", -20);
+            SimpleProduct сок = new SimpleProduct("Сок", -20);
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка: " + e.getMessage());
         }

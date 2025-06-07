@@ -1,6 +1,8 @@
 package org.skypro.skyshop.product;
 
-public abstract class Product extends org.skypro.skyshop.basket.Searchable implements org.skypro.skyshop.product.Searchable {
+public abstract class Product extends org.skypro.skyshop.basket.Searchable
+
+        implements Searchable {
     private final String name;
     protected int discountPercent;
 
@@ -11,7 +13,8 @@ public abstract class Product extends org.skypro.skyshop.basket.Searchable imple
         this.name = name;
     }
 
-    public Product(String name, String s, String name1) {
+    public Product() {
+        String name1 = new String();
         this.name = name1;
     }
 
