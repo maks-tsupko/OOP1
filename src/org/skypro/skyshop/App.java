@@ -1,48 +1,116 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.basket.Searchable;
+import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
-import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.search.ProductBasket;
+import org.skypro.skyshop.search.SearchEngine;
+
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
-        // Создание продуктов
-        Product product1 = new Product("Яблоко", 50);
-        Product product2 = new Product("Молоко", 80);
-        Product product3 = new Product("Хлеб", 30);
-        Product product4 = new Product("Масло", 120);
-        Product product5 = new Product("Сыр", 250);
-        Product product6 = new Product("Шоколад", 100); // Для проверки заполненной корзины
+        // Товары
+        Product p1 = new org.skypro.skyshop.SimpleProduct("Хлеб", 40);
+        Product p2 = new org.skypro.skyshop.DiscountedProduct("Молоко", 100, 20);
+        Product p3 = new FixPriceProduct("Книга");
+        Product p4 = new SimpleProduct("Яблоки", 60);
+        Product p5 = new FixPriceProduct("Кружка");
 
-        // Создание корзины
+        // Корзина
         ProductBasket basket = new ProductBasket();
+        basket.addProduct(p1);
+        basket.addProduct(p2);
+        basket.addProduct(p3);
+        basket.addProduct(p4);
+        basket.addProduct(p5);
 
-        // Демонстрация работы методов корзины
-        basket.addProduct(product1);
-        basket.addProduct(product2);
-        basket.addProduct(product3);
-        basket.addProduct(product4);
-        basket.addProduct(product5);
+        basket.printBasket();
 
-        // Проверка добавления в заполненную корзину
-        basket.addProduct(product6); // Ожидаем сообщение "Невозможно добавить продукт"
+        // Удаление существующего продукта
+        List<Product> removed = basket.removeByName("Молоко");
+        if (!removed.isEmpty()) {
+            System.out.println("Удалены продукты:");
+            for (Product product : removed) {
+                System.out.println(product.getStringRepresentation());
+            }
+        }
+        basket.printBasket();
 
-        // Печать содержимого корзины
-        basket.printBasketContent();
+        // Удаление несуществующего продукта
+        List<Product> removedNone = basket.removeByName("Кофе");
+        if (removedNone.isEmpty()) {
+            System.out.println("Список пуст");
+        }
+        basket.printBasket();
 
-        // Получение стоимости корзины
-        System.out.println("Общая стоимость корзины: " + basket.getTotalPrice());
+        // Статьи
+        Product a1;
+        a1 = new Product("Как выбрать молоко", "Разбираемся в составе и видах молока") {
+            @Override
+            public int getPrice() {
+                return 0;
+            }
 
-        // Поиск товара в корзине
-        System.out.println("В корзине есть яблоко: " + basket.containsProduct("Яблоко"));
-        System.out.println("В корзине есть апельсин: " + basket.containsProduct("Апельсин"));
+            @Override
+            public boolean isSpecial() {
+                return false;
+            }
+        };
+        Product a2 = new Product("Польза яблок", "Почему яблоки важны для здоровья") {
+            @Override
+            public int getPrice() {
+                return 0;
+            }
 
-        // Очистка корзины
-        basket.clearBasket();
+            @Override
+            public boolean isSpecial() {
+                return false;
+            }
+        };
+        Product a3 = new Product("Скидки на хлеб", "Новые акции на хлебобулочные изделия") {
+            @Override
+            public int getPrice() {
+                return 0;
+            }
 
-        // Демонстрация после очистки
-        System.out.println("После очистки:");
-        basket.printBasketContent();
-        System.out.println("Общая стоимость корзины: " + basket.getTotalPrice());
-        System.out.println("В корзине есть яблоко: " + basket.containsProduct("Яблоко"));
+            @Override
+            public boolean isSpecial() {
+                return false;
+            }
+        };
+
+        // Поисковый движок
+        SearchEngine engine = new SearchEngine();
+        engine.add(p1);
+        engine.add(p2);
+        engine.add(p3);
+        engine.add(p4);
+        engine.add(p5);
+        engine.add(a1);
+        engine.add(a2);
+        engine.add(a3);
+
+        // Тест поиска
+        printSearchResults(engine.search("молоко"));
+        printSearchResults(engine.search("яблок"));
+        printSearchResults(engine.search("хлеб"));
+        printSearchResults(engine.search("скидки"));
+    }
+
+    private static void printSearchResults(List<Searchable> results) {
+        System.out.println("Результаты поиска:");
+        for (Searchable result : results) {
+            System.out.println(result.getStringRepresentation());
+        }
+        System.out.println();
+    }
+
+    static {
+        try {
+            SimpleProduct сок = new SimpleProduct("Сок", -20);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
     }
 }
