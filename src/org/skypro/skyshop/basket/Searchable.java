@@ -8,4 +8,10 @@ public class Searchable {
     public boolean getStringRepresentation() {
         return false;
     }
+
+    public String getName() {
+
+        return String.valueOf(false);
+    }
+
 }
