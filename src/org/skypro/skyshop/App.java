@@ -7,7 +7,7 @@ import org.skypro.skyshop.search.ProductBasket;
 import org.skypro.skyshop.search.SearchEngine;
 
 import java.util.List;
-import java.util.Map;
+
 
 public class App {
     public static void main(String[] args) {
@@ -114,11 +114,5 @@ public class App {
             System.out.println("Ошибка: " + e.getMessage());
         }
     }
-    SearchEngine engine = new SearchEngine();
-    List<Searchable> results = engine.search("Сок");
 
-    Map.Entry<String, Searchable> entry;{
-        System.out.println("Found: " + entry.getKey());
-        System.out.println(entry.getValue());
-    }
 }
